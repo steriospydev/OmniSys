@@ -1,0 +1,24 @@
+- Account
+    - User
+- People
+    - Supplier
+- Product
+    - Product
+    - Category
+    - Brand
+    - Material
+    - Package
+    - Tax_rate
+- Documents
+    - Order
+    - OrderItem
+    - Invoice
+    - InvoiceItem
+- Expenses
+    - Payment
+    - Payee
+    - PayeeType
+    - Income
+- Storehouse
+    - Storage
+    - Stock

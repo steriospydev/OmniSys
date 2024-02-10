@@ -1,0 +1,31 @@
+venv/
+past_repositories/
+
+db.sqlite3
+migrations
+__pycache__/
+static/
+
+.DS_Store
+frontend/node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
