@@ -1,8 +1,11 @@
 import os
+import sys
 from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 LOGIN_URL = 'account:login'
 
@@ -21,7 +24,8 @@ INSTALLED_APPS = [
     'drf_yasg', 
 
     # own
-    'account',
+    'apps.account',
+    'apps.people'
     
 ]
 
