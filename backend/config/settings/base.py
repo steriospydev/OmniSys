@@ -25,6 +25,7 @@ INSTALLED_APPS = [
 
     # own
     'apps.account',    
+    'apps.people',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
