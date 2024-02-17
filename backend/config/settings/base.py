@@ -24,9 +24,7 @@ INSTALLED_APPS = [
     'drf_yasg', 
 
     # own
-    'apps.account',
-    'apps.people'
-    
+    'apps.account',    
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
