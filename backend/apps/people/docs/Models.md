@@ -1,13 +1,4 @@
-## Contact
-- ID [PK, UUID4, UNIQUE]
-- address [varchar(100), Null]
-- city [varchar(100), Null]
-- area [varchar(100), Null]
-- zipcode [varchar(5), Null]
-- email [varchar(100), Null]
-- phone [varchar(10), Null]
-
-## Supplier [ TimestampedModel]
+## Supplier [ [TimeStamp](/app/backend/apps/tools/docs/Models.md) ]
 - ID [PK, UUID4, UNIQUE]
 - company [NN,varchar(100)]
 - contact_id [FK,1-1]
