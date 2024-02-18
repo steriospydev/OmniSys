@@ -1,0 +1,41 @@
+- Account
+    - CustomUser
+        -  Company
+        -  Address
+        -  Occupation
+        -  Tin
+        -  VatHome
+- TimeStamp [ Abstract]
+    - created_at [ Datetime ]
+    - updated_at [ Datetime ]
+- [People Model Design](/app/backend/apps/people/docs/Models.md)
+- [Product Model Design](/app/backend/apps/people/docs/Models.md)
+- [Documents Model Design](/app/backend/apps/people/docs/Models.md)
+- [Expenses Model Design](/app/backend/apps/people/docs/Models.md)
+- [Storehouse Model Design](/app/backend/apps/people/docs/Models.md)
+
+- Product
+    - Product
+    - Category
+    - Brand
+    - Material
+    - Package
+    - Tax_rate
+- Documents
+    - Order
+    - OrderItem
+    - Invoice
+    - InvoiceItem
+- Expenses
+    - Payment
+    - Payee
+    - PayeeType
+    - Income
+- Storehouse
+    - Storage
+    - Stock
+
+- PK: Primary Key
+- FK: Foreign Key
+- NN: Not Null
+- U : Unique
