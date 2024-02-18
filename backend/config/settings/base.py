@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'drf_yasg', 
 
     # own
+    'apps.tools',
     'apps.account',    
     'apps.people',
 ]
