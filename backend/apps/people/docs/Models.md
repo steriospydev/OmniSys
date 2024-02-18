@@ -1,9 +1,15 @@
-## Supplier
+## Contact
+- ID [PK, UUID4, UNIQUE]
+- address [varchar(100), Null]
+- city [varchar(100), Null]
+- area [varchar(100), Null]
+- zipcode [varchar(5), Null]
+- email [varchar(100), Null]
+- phone [varchar(10), Null]
+
+## Supplier [ TimestampedModel]
 - ID [PK, UUID4, UNIQUE]
 - company [NN,varchar(100)]
+- contact_id [FK,1-1]
 - tin_agency [varchar(100), Null]
 - tin_num [varchar(9), Unique]
-
-## Client
-
-## ContactInfo
