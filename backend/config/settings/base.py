@@ -17,18 +17,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party
     'corsheaders',
-    'rest_framework',
+    "djoser",
     'rest_framework_swagger',
     'drf_yasg', 
-
+    
     # own
     'apps.tools',    
     'apps.people',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
-
-
 
 
 MIDDLEWARE = [
