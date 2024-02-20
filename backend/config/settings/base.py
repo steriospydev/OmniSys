@@ -7,7 +7,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
-LOGIN_URL = 'account:login'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,27 +18,17 @@ INSTALLED_APPS = [
     # 3rd party
     'corsheaders',
     'rest_framework',
-    "rest_framework.authtoken",
     'rest_framework_swagger',
     'drf_yasg', 
 
     # own
-    'apps.tools',
-    'apps.account',    
+    'apps.tools',    
     'apps.people',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication', 
-    ],
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAdminUser',
-    ),
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
-}
+
 
 
 MIDDLEWARE = [

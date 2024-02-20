@@ -22,8 +22,6 @@ class Contact(models.Model):
                                         regex=r'^\d{5}$',
                                         message="Zipcode must be 5 digits."
                                     )])
-    TIN_agency = models.CharField("Tax Authority", max_length=120, blank=True,
-                                   null=True)
     phone = models.CharField('Phone', max_length=10,
                              blank=True, null=True,
                              validators=[

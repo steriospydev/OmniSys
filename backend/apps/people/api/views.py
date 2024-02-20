@@ -1,3 +1,19 @@
-from django.shortcuts import render
+from rest_framework.generics import (
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView
+)
 
-# Create your views here.
+from ..models import Supplier
+from .serializers import SupplierSerializer
+
+class SupplierListCreateAPIView(ListCreateAPIView):
+    queryset = Supplier.objects.all()
+    serializer_class = SupplierSerializer
+    lookup_field = 'id'
+
+class SupplierRetrieveUpdateDestroyAPIView(
+    RetrieveUpdateDestroyAPIView
+):
+    queryset = Supplier.objects.all()
+    serializer_class = SupplierSerializer
+    lookup_field = 'id'

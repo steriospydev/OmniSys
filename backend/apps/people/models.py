@@ -1,9 +1,13 @@
+import uuid
 from django.core.validators import RegexValidator
 from django.db import models
 
 from apps.tools.models import TimeStamp, Contact
 
 class Supplier(TimeStamp, Contact):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                          db_index=True,
+                          editable=False)
     company = models.CharField("Company", max_length=120, unique=True)
     person = models.CharField("Representative", max_length=120,
                                blank=True, null=True)  
@@ -22,7 +26,6 @@ class Supplier(TimeStamp, Contact):
     class Meta:
         verbose_name = 'Supplier'
         verbose_name_plural = 'Suppliers'
-        ordering = ['-created_at']
 
     def __str__(self):
         return f'{self.company}'
