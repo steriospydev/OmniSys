@@ -1,40 +1,13 @@
-- Account
-    - CustomUser
-        -  Company
-        -  Address
-        -  Occupation
-        -  Tin
-        -  VatHome
-- TimeStamp [ Abstract]
-    - created_at [ Datetime ]
-    - updated_at [ Datetime ]
+## Browse Models Documentation
+- [Abstract Model Design](/app/backend/apps/tools/docs/Models.md)
 - [People Model Design](/app/backend/apps/people/docs/Models.md)
 - [Product Model Design](/app/backend/apps/people/docs/Models.md)
-- [Documents Model Design](/app/backend/apps/people/docs/Models.md)
-- [Expenses Model Design](/app/backend/apps/people/docs/Models.md)
+- [Document Model Design](/app/backend/apps/people/docs/Models.md)
+- [Balance Model Design](/app/backend/apps/people/docs/Models.md)
 - [Storehouse Model Design](/app/backend/apps/people/docs/Models.md)
 
-- Product
-    - Product
-    - Category
-    - Brand
-    - Material
-    - Package
-    - Tax_rate
-- Documents
-    - Order
-    - OrderItem
-    - Invoice
-    - InvoiceItem
-- Expenses
-    - Payment
-    - Payee
-    - PayeeType
-    - Income
-- Storehouse
-    - Storage
-    - Stock
 
+### Constraints Key:
 - PK: Primary Key
 - FK: Foreign Key
 - NN: Not Null
