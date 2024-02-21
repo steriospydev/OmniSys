@@ -1,5 +1,5 @@
 # OmniSys
 ## Doc Links
 
-### [Database](/app/docs/backend/DatabaseDesign.md) 
+### [Models](/app/docs/backend/Models.md) 
 ### [Endpoints](/app/docs/backend/Endpoints.md)
