@@ -24,5 +24,5 @@
 
 
 
-#### [Back to Readme.md](/app/docs/Readme.md) 
-#### [Back to Models.md](/app/docs/backend/Models.md) 
+#### [Back to Readme](/app/docs/Readme.md) 
+#### [Back to Models](/app/docs/backend/Models.md) 
