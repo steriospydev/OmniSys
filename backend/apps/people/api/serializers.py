@@ -8,6 +8,6 @@ class SupplierSerializer(serializers.ModelSerializer):
         fields = [
             'company', 'person', 'TIN_agency','TIN_num',
             'city', 'area', 'address', 'zipcode', 'phone',
-            'email', 'id'
+            'email', 'id', 'sku_num'
         ]
         

@@ -1,8 +1,10 @@
 import uuid
 from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models.signals import pre_save
 
 from apps.tools.models import TimeStamp, Contact
+from apps.tools import signals
 
 class Supplier(TimeStamp, Contact):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
@@ -21,7 +23,8 @@ class Supplier(TimeStamp, Contact):
                                        message="Invalid Greek TIN number. It must contain 9 digits."
                                    )],
                                unique=True)
-    
+    sku_num = models.CharField(max_length=2, unique=True,
+                               blank=True, null=True, editable=False)
     
     class Meta:
         verbose_name = 'Supplier'
@@ -29,3 +32,10 @@ class Supplier(TimeStamp, Contact):
 
     def __str__(self):
         return f'{self.company}'
+    
+
+
+
+pre_save.connect(lambda sender, instance, **kwargs:
+                 signals.generate_sku_num(sender, instance, k=2),
+                 sender=Supplier)
