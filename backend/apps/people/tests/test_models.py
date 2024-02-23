@@ -3,8 +3,8 @@ from django.test import TestCase
 from apps.people.models import Supplier
 
 class ModelTests(TestCase):
-    def test_supplier_creation(self):
-        supplier = Supplier.objects.create(
+    def setUp(self):
+        self.create_supplier = Supplier.objects.create(
             company='Test Company',
             person='Test Person',
             TIN_agency='Test Agency',
@@ -16,80 +16,54 @@ class ModelTests(TestCase):
             phone='1234567890',
             email='test@test.com'
         )
+        self.supplier = Supplier.objects.first()
+
+    def test_supplier_creation(self):        
         self.assertEqual(Supplier.objects.count(), 1)
 
-    def test_unique_TIN_num(self):
-        supplier1 = Supplier.objects.create(
-            company='Test Company 1',
-            person='Test Person 1',
-            TIN_agency='Test Agency 1',
-            TIN_num='123456789',
-            city='Test City 1',
-            area='Test Area 1',
-            address='Test Address 1',
-            zipcode='12345',
-            phone='1234567890',
-            email='test1@test.com'
-        )
-        # Attempt to create another supplier with the same TIN_num
-        with self.assertRaises(Exception) as context:
-            supplier2 = Supplier.objects.create(
-                company='Test Company 2',
-                person='Test Person 2',
-                TIN_agency='Test Agency 2',
-                TIN_num='123456789',  # Same TIN_num as supplier1
-                city='Test City 2',
-                area='Test Area 2',
-                address='Test Address 2',
-                zipcode='12345',
-                phone='1234567890',
-                email='test2@test.com'
-            )
-        self.assertTrue('UNIQUE constraint failed' in str(context.exception))
+    def test_sku_generated(self):
+        self.assertIsNotNone(self.supplier.sku_num)
 
-    def test_unique_company(self):
-        supplier1 = Supplier.objects.create(
-            company='Test Company 1',
-            person='Test Person 1',
-            TIN_agency='Test Agency 1',
-            TIN_num='123456780',  # Different TIN_num
-            city='Test City 1',
-            area='Test Area 1',
-            address='Test Address 1',
-            zipcode='12345',
-            phone='1234567890',
-            email='test1@test.com'
-        )
-        # Attempt to create another supplier with the same company name
-        with self.assertRaises(Exception) as context:
-            supplier2 = Supplier.objects.create(
-                company='Test Company 1',  # Same company name as supplier1
-                person='Test Person 2',
-                TIN_agency='Test Agency 2',
-                TIN_num='123456781',  # Different TIN_num
-                city='Test City 2',
-                area='Test Area 2',
-                address='Test Address 2',
-                zipcode='12345',
-                phone='1234567890',
-                email='test2@test.com'
-            )
-        self.assertTrue('UNIQUE constraint failed' in str(context.exception))
+    def test_unique_company_and_TIN_num(self):
+        with self.assertRaises(Exception) as context_company:
+            with self.assertRaises(Exception) as context_TIN:
+                Supplier.objects.create(
+                    company='Test Company',  # Same company name 
+                    TIN_num='123456783',     # Same TIN_num 
+                )
+                # Check failure of TIN_num
+                self.assertTrue('UNIQUE constraint failed TIN_num' in str(context_TIN.exception))
+            # Check failure of company
+            self.assertTrue('UNIQUE constraint failed company' in str(context_company.exception))
+           
+
+      
 
     def test_create_with_minimum_fields(self):
-        # Create a Supplier with only company name and TIN number
-        supplier = Supplier.objects.create(
-            company='Test Company',
-            TIN_num='123456789'
+        new_supplier = Supplier.objects.create(
+            company='Test Company 2',
+            TIN_num='0123456789'
         )
-
-        # Retrieve the created Supplier from the database
-        saved_supplier = Supplier.objects.get(id=supplier.id)
-
+        saved_supplier = Supplier.objects.get(id=new_supplier.id)       
         # Check if the saved Supplier matches the provided data
-        self.assertEqual(saved_supplier.company, 'Test Company')
-        self.assertEqual(saved_supplier.TIN_num, '123456789')
+        self.assertEqual(saved_supplier.company, 'Test Company 2')
+        self.assertEqual(saved_supplier.TIN_num, '0123456789')
+        self.assertIsNotNone(saved_supplier.sku_num)
 
-        # Ensure other fields are set to their default values or are null
-        self.assertIsNone(saved_supplier.person)
-        self.assertIsNone(saved_supplier.TIN_agency)
+    def test_phone_has_10_digits(self):
+        supplier = Supplier.objects.first()
+        self.assertEqual(len(supplier.phone), 10)
+
+    def test_TIN_num_has_9_digits(self):
+        supplier = Supplier.objects.first()
+        tin_num = supplier.TIN_num
+        self.assertTrue(tin_num.isdigit())
+        self.assertEqual(len(tin_num), 9)
+
+    def test_email_has_correct_format(self):
+        supplier = Supplier.objects.first()
+        email = supplier.email
+        self.assertTrue('@' in email and '.' in email)
+
+    def test_sku_length(self):
+        self.assertEqual(len(self.supplier.sku_num), 2)

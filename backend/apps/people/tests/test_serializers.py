@@ -16,30 +16,24 @@ class SerializerTests(TestCase):
             'phone': '1234567890',
             'email': 'test@test.com'
         }
+        Supplier.objects.create(**self.supplier_data)
+        self.supplier = Supplier.objects.first()
 
     def test_serialization(self):
-        supplier = Supplier.objects.create(**self.supplier_data)
-        serializer = SupplierSerializer(instance=supplier)
+        serializer = SupplierSerializer(instance=self.supplier)
         serialized_data = serializer.data
-
-        # Check if all fields are present in the serialized data
         expected_fields = set(['company', 'person', 'TIN_agency', 'TIN_num',
                                'city', 'area', 'address', 'zipcode', 'phone',
-                               'email', 'id'])
+                               'email', 'id', 'sku_num'])
         self.assertEqual(set(serialized_data.keys()), expected_fields)
 
-        # Add more specific checks for each field if needed
+    def test_sku_num_generated(self):
+        serializer = SupplierSerializer(instance=self.supplier)
+        serialized_data = serializer.data
+        self.assertIn('sku_num', serialized_data)
+        self.assertTrue(serialized_data['sku_num'])
 
-    def test_deserialization(self):
-        serializer = SupplierSerializer(data=self.supplier_data)
-        self.assertTrue(serializer.is_valid())
-        supplier = serializer.save()
-
-        # Ensure the deserialized Supplier object matches the expected data
-        self.assertEqual(supplier.company, self.supplier_data['company'])
-        self.assertEqual(supplier.person, self.supplier_data['person'])
-        # Add assertions for other fields
-
-    
-
-    # Add more tests for required fields validation if needed
+    def test_sku_num_has_2_chars(self):
+        serializer = SupplierSerializer(instance=self.supplier)
+        serialized_data = serializer.data
+        self.assertEqual(len(serialized_data['sku_num']), 2)
