@@ -36,9 +36,6 @@ class ModelTests(TestCase):
             # Check failure of company
             self.assertTrue('UNIQUE constraint failed company' in str(context_company.exception))
            
-
-      
-
     def test_create_with_minimum_fields(self):
         new_supplier = Supplier.objects.create(
             company='Test Company 2',
