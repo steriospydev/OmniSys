@@ -14,7 +14,6 @@ class CategoryModelTestCase(TestCase):
         with self.assertRaises(Exception):
             Category.objects.create(category_name='Category 1')
 
-
 class SubCategoryModelTestCase(TestCase):
     def setUp(self):
         self.category = Category.objects.create(category_name="Test Category")
@@ -31,7 +30,6 @@ class SubCategoryModelTestCase(TestCase):
         subcategory2 = SubCategory.objects.create(subcategory_name="Test Subcategory",
                                                   category=category2)
         self.assertEqual(subcategory2.subcategory_name, "Test Subcategory")
-
 
 class PackageModelTestCase(TestCase):
     def setUp(self):
@@ -50,7 +48,6 @@ class PackageModelTestCase(TestCase):
             Package.objects.create(material=constants.OTHER,
                                    package_unit=constants.KILO,
                                    package_quantity=1.5)   
-
 
 class TaxModelTestCase(TestCase):
     def test_tax_creation(self):
