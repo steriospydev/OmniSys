@@ -2,16 +2,16 @@
 ## Category 
 - ID [PK, UUID4, UNIQUE]
 - category_name [NN,varchar(100), UNIQUE]
-## Brand 
+## Subcategory 
 - ID [PK, UUID4, UNIQUE]
-- brand_name [NN,varchar(100), UNIQUE]
+- sub_name [NN,varchar(100), UNIQUE]
+- category [FK to Category]
 ## Package 
 - ID [PK, UUID4, UNIQUE]
 - material [choice, default='Other']
 - package_unit [choice NN]
 - package_quantity [decimal NN]
 * Unique thogether: [material, package_unit, quantity]
-
 ## Tax_rate 
 - ID [PK, UUID4, UNIQUE]
 - value [decimal NN Unique]
@@ -19,8 +19,7 @@
 ## Product [ TimeStamp ]
 - ID [PK, UUID4, UNIQUE]
 - product_name [varchar(100)]
-- category [FK to Category]
-- brand [FK to Brand]
+- sub_category [FK to SubCategory]
 - tax_rate [FK to Tax_rate]
 - package [FK to Package]
 - summary [varchar, null]

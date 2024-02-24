@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     # own
     'apps.tools',    
     'apps.people',
+    'apps.product'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True

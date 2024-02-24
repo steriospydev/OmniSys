@@ -1,14 +1,14 @@
 KILO = 'kg'
 GRAM = 'gr'
-OTHER = 'oo'
 LITRE = 'lt'
 MILLILITRE = 'ml'
-UNIT = 'ut'
+UNIT = 'pc'
 
-PAPER = 'pa'
-GLASS = 'gl'
-PLASTIC = 'pl'
-OTHER = 'ot'
+PAPER = 'Paper'
+GLASS = 'Glass'
+PLASTIC = 'Plastic'
+ALUMIN = 'Alumin'
+OTHER = 'Other'
 
 PACKAGE_UNITS_CHOICES = [
     (KILO, 'Kilo'),
@@ -16,6 +16,7 @@ PACKAGE_UNITS_CHOICES = [
     (LITRE, 'Litre'),
     (MILLILITRE, 'Millilitre'),
     (UNIT, 'Unit'),
+    (OTHER, 'Other'),
 ]
 
 
@@ -24,5 +25,6 @@ MATERIAL_CHOICES = [
     (PAPER, 'Paper'),
     (GLASS, 'Glass'),
     (PLASTIC, 'Plastic'),
+    (ALUMIN, 'Alumin'),
     (OTHER, 'Other'),
 ]
