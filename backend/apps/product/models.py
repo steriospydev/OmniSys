@@ -2,6 +2,7 @@ import uuid
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_save
+from django.urls import reverse
 
 from apps.tools.models import TimeStamp
 from apps.tools import signals
@@ -12,6 +13,7 @@ class Category(TimeStamp):
                           db_index=True, editable=False)
     category_name = models.CharField("Category Name", unique=True,
                                       max_length=120)
+    slug = models.SlugField(null=True)
 
     class Meta:
         verbose_name = 'Category'
@@ -25,21 +27,30 @@ class Category(TimeStamp):
         subcategories = self.subs.all()
         return sum(subcategory.get_num_products() for subcategory in subcategories)
 
+    def get_absolute_url(self):
+        return reverse("sub-item", kwargs={"slug": self.slug})
+    
 class SubCategory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)
     subcategory_name = models.CharField("SubCategory Name", max_length=120)
     category = models.ForeignKey(Category, on_delete=models.CASCADE,
                                  related_name='subs')
+    slug = models.SlugField(null=True)
 
     class Meta:
         verbose_name = 'SubCategory'
         verbose_name_plural = 'SubCategories'
         ordering = ['subcategory_name']
-        constraints = [
-            models.UniqueConstraint(fields=['subcategory_name', 'category'],
-                                    name='unique_category')]
-
+        unique_together = ['category', 'subcategory_name']
+        """
+        Response
+        {
+            "non_field_errors": [
+                "The fields category, subcategory_name must make a unique set."
+            ]
+            }
+        """
     def __str__(self):
         return f'{self.subcategory_name}'
 
@@ -47,6 +58,9 @@ class SubCategory(models.Model):
         products = self.sub_products.all()
         return len(products)
 
+    def get_absolute_url(self):
+        return reverse("sub-item", kwargs={"slug": self.slug})
+    
 class Package(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)
