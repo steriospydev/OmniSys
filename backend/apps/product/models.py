@@ -69,7 +69,7 @@ class Package(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.material}, {self.package_quantity}{self.package_unit} '
+        return f'{self.material}, {self.package_quantity}{self.package_unit}'
 
 class Tax(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
