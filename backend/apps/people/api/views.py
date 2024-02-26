@@ -1,22 +1,14 @@
-from rest_framework.generics import (
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView
-)
-from rest_framework.permissions import IsAuthenticated
-
 from ..models import Supplier
 from .serializers import SupplierSerializer
+from apps.tools.views import (BaseListCreateAPIView,
+                              BaseRetrieveUpdateDestroyAPIView)
 
-class SupplierListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+class SupplierListCreateAPIView(BaseListCreateAPIView):
     queryset = Supplier.objects.all()
     serializer_class = SupplierSerializer
-    lookup_field = 'id'
 
 class SupplierRetrieveUpdateDestroyAPIView(
-    RetrieveUpdateDestroyAPIView
+    BaseRetrieveUpdateDestroyAPIView
 ):
-    permission_classes = [IsAuthenticated]
     queryset = Supplier.objects.all()
     serializer_class = SupplierSerializer
-    lookup_field = 'id'

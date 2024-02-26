@@ -1,82 +1,55 @@
-from rest_framework.generics import (
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView
-)
-from rest_framework.permissions import IsAuthenticated
-
-from .serializers import (CategorySerializer, SubCategorySerializer,
-                          TaxSerializer, PackageSerializer,
-                          ProductSerializer)
+from . import serializers
 from ..models import Category ,SubCategory, Tax, Package, Product
 
+from apps.tools.views import (BaseListCreateAPIView,
+                              BaseRetrieveUpdateDestroyAPIView)
 
-class CategoryListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+class CategoryListCreateAPIView(BaseListCreateAPIView):
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    lookup_field = 'id'
+    serializer_class = serializers.CategorySerializer
+
+class SubCategoryListCreateAPIView(BaseListCreateAPIView):
+    queryset = SubCategory.objects.all()   
+    serializer_class = serializers.SubCategorySerializer
+
+class TaxListCreateAPIView(BaseListCreateAPIView):
+    queryset = Tax.objects.all()   
+    serializer_class = serializers.TaxSerializer
+
+class PackageListCreateAPIView(BaseListCreateAPIView):
+    queryset = Package.objects.all()   
+    serializer_class = serializers.PackageSerializer
+
+class ProductListCreateAPIView(BaseListCreateAPIView):
+    queryset = Product.objects.all()   
+    serializer_class = serializers.ProductSerializer
 
 class CategoryRetrieveUpdateDestroyAPIView(
-    RetrieveUpdateDestroyAPIView
+    BaseRetrieveUpdateDestroyAPIView
 ):
-    permission_classes = [IsAuthenticated]
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    lookup_field = 'id'
-
-class SubCategoryListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = SubCategory.objects.all()   
-    serializer_class = SubCategorySerializer
-    lookup_field = 'id'
+    serializer_class = serializers.CategorySerializer
 
 class SubCategoryRetrieveUpdateDestroyAPIView(
-    RetrieveUpdateDestroyAPIView
+    BaseRetrieveUpdateDestroyAPIView
 ):
-    permission_classes = [IsAuthenticated]
     queryset = SubCategory.objects.all()
-    serializer_class = SubCategorySerializer
-    lookup_field = 'id'
-
-class TaxListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = Tax.objects.all()   
-    serializer_class = TaxSerializer
-    lookup_field = 'id'
+    serializer_class = serializers.SubCategorySerializer
 
 class TaxRetrieveUpdateDestroyAPIView(
-    RetrieveUpdateDestroyAPIView
+    BaseRetrieveUpdateDestroyAPIView
 ):
-    permission_classes = [IsAuthenticated]
     queryset = Tax.objects.all()
-    serializer_class = TaxSerializer
-    lookup_field = 'id'
-
-class PackageListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = Package.objects.all()   
-    serializer_class = PackageSerializer
-    lookup_field = 'id'
+    serializer_class = serializers.TaxSerializer
 
 class PackageRetrieveUpdateDestroyAPIView(
-    RetrieveUpdateDestroyAPIView
+    BaseRetrieveUpdateDestroyAPIView
 ):
-    permission_classes = [IsAuthenticated]
     queryset = Package.objects.all()
-    serializer_class = PackageSerializer
-    lookup_field = 'id'
-
-
-class ProductListCreateAPIView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = Product.objects.all()   
-    serializer_class = ProductSerializer
-    lookup_field = 'id'
+    serializer_class = serializers.PackageSerializer
 
 class ProductRetrieveUpdateDestroyAPIView(
-    RetrieveUpdateDestroyAPIView
+    BaseRetrieveUpdateDestroyAPIView
 ):
-    permission_classes = [IsAuthenticated]
     queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    lookup_field = 'id'
+    serializer_class = serializers.ProductSerializer
