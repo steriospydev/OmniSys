@@ -67,7 +67,7 @@ class TaxModelTestCase(TestCase):
     def test_clean_method_with_negative_value(self):
         tax = Tax(value=-5.0)
         with self.assertRaises(ValidationError):
-            tax.clean()
+            tax.clean_value()
 
 class ProductModelTest(TestCase):
     def setUp(self):
