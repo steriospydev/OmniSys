@@ -76,11 +76,7 @@ class Package(models.Model):
     class Meta:
         verbose_name = 'Package'
         verbose_name_plural = 'Packages'
-        constraints = [
-            models.UniqueConstraint(fields=['material', 'package_unit',
-                                            'package_quantity'],
-                                    name='unique_package')
-        ]
+        unique_together = ['material', 'package_unit', 'package_quantity']
 
     def __str__(self):
         return f'{self.material}, {self.package_quantity}{self.package_unit}'
@@ -89,7 +85,7 @@ class Tax(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)
     value = models.DecimalField('Value %',  default=00.00,
-                                max_digits=8, decimal_places=2)
+                                max_digits=8, decimal_places=2, unique=True)
 
     class Meta:
         verbose_name = 'Tax'
@@ -98,7 +94,7 @@ class Tax(models.Model):
     def __str__(self):
         return f'{self.value}'
 
-    def clean(self):
+    def clean_value(self):
         if self.value < 0:
             raise ValidationError('Tax value can not be negative')
 
@@ -124,10 +120,7 @@ class Product(TimeStamp):
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
         ordering = ['product_name']
-        constraints = [
-            models.UniqueConstraint(fields=['product_name', 'package'],
-                                    name='unique_product')
-        ]
+        unique_together = ['product_name', 'package']
 
     def __str__(self):
         return f'{self.product_name} - {self.package}'

@@ -27,7 +27,8 @@ INSTALLED_APPS = [
     # own
     'apps.tools',    
     'apps.people',
-    'apps.product'
+    'apps.product',
+    
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -41,6 +42,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',    
