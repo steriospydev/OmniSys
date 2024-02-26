@@ -55,8 +55,6 @@ class PackageSerializer(serializers.HyperlinkedModelSerializer):
         model = Package
         fields = ['id', 'package_unit', 'material', 'package_quantity', 'url']
 
-
-
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     subcategory = serializers.PrimaryKeyRelatedField(queryset=SubCategory.objects.all())
     package = serializers.PrimaryKeyRelatedField(queryset=Package.objects.all())
