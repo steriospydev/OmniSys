@@ -1,22 +1,9 @@
-from django.urls import reverse
-from rest_framework.test import APITestCase, APIRequestFactory
-from rest_framework import status
-from django.contrib.auth.models import User
-from apps.product.models import Category, SubCategory, Tax, Package, Product
 from decimal import Decimal
+from django.urls import reverse
+from rest_framework import status
 
-class BaseAPITestCase(APITestCase):
-    def setUp(self):
-        self.factory = APIRequestFactory()
-        self.user = User.objects.create_user(username='testuser', password='12345')
-
-    def perform_auth(self, username='testuser', password='12345'):
-        url = reverse('rest_login')
-        data = {'username': username, 'password': password}
-        response = self.client.post(url, data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        return response.data['key']
-
+from apps.tools.tests import BaseAPITestCase
+from apps.product.models import Category, SubCategory, Tax, Package, Product
 
 
 class CategoryListCreateAPIViewTest(BaseAPITestCase):
@@ -54,9 +41,7 @@ class CategoryListCreateAPIViewTest(BaseAPITestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Category.objects.count(), 1)  # No new category should be created
-
-    
-
+ 
 class SubCategoryListCreateAPIViewTest(BaseAPITestCase):
     def test_list_subcategories(self):
         category = Category.objects.create(category_name='Test Category')
@@ -108,7 +93,6 @@ class SubCategoryListCreateAPIViewTest(BaseAPITestCase):
         self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
         self.assertEqual(SubCategory.objects.count(), 2)
-
 
 class TaxCategoryListCreateAPIViewTest(BaseAPITestCase):
     def test_list_tax_categories(self):
@@ -163,3 +147,91 @@ class TaxCategoryListCreateAPIViewTest(BaseAPITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Tax.objects.count(), 1)
         self.assertIsInstance(Tax.objects.get().value, Decimal)
+
+class PackageListCreateAPIViewTests(BaseAPITestCase):
+
+    def test_list_packages(self):
+        Package.objects.create(material='Paper', package_unit='kg', package_quantity=10.5)
+        Package.objects.create(material='Glass', package_unit='Unit', package_quantity=100)
+
+        token = self.perform_auth()
+        url = reverse('product:package')
+        response = self.client.get(url)
+        expected_packages = ['Paper, 10.5kg', 'Glass, 100.0Unit']
+        received_packages = [f"{package['material']}, {package['package_quantity']}{package['package_unit']}" for package in response.data]
+
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}') 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)        
+        self.assertCountEqual(expected_packages, received_packages)
+
+    def test_create_package_success(self):
+        token = self.perform_auth()
+        url = reverse('product:package')
+        data = {'material': 'Paper', 'package_unit': 'kg', 'package_quantity': '10.5'}
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Package.objects.count(), 1)
+        self.assertEqual(str(Package.objects.get()), 'Paper, 10.5kg')
+
+    def test_unique_constraints(self):
+        token = self.perform_auth()
+        Package.objects.create(material='Paper', package_unit='kg', package_quantity=10.5)
+        url = reverse('product:package')
+        data = {'material': 'Paper', 'package_unit': 'kg', 'package_quantity': '10.5'}
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Package.objects.count(), 1)
+    
+class ProductListCreateAPIViewTests(BaseAPITestCase):
+    def setUp(self):
+        super().setUp()
+        self.category = Category.objects.create(category_name='Test Category')
+        self.subcategory = SubCategory.objects.create(subcategory_name='Test Subcategory',
+                                                      category=self.category)
+        self.tax = Tax.objects.create(value=Decimal('10.00'))
+        self.package = Package.objects.create(material='Paper', package_unit='kg', package_quantity=10.5)
+        self.data = {
+            'product_name': 'Test Product',
+            'subcategory': self.subcategory.id,
+            'package': self.package.id,
+            'tax_rate': self.tax.id,
+            'summary': 'Test Summary',
+            'is_active': True,
+            'available': False,
+            'online_sell': False,
+        }
+
+    def test_create_product_success(self):
+        token = self.perform_auth()
+        url = reverse('product:product')
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.post(url, self.data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Product.objects.count(), 1)
+        created_product = Product.objects.first()
+        self.assertEqual(created_product.product_name, self.data['product_name'])
+        self.assertEqual(created_product.subcategory_id, self.data['subcategory'])
+        self.assertEqual(created_product.package_id, self.data['package'])
+        self.assertEqual(created_product.tax_rate_id, self.data['tax_rate'])
+        self.assertEqual(created_product.summary, self.data['summary'])
+        self.assertEqual(created_product.sku_num, self.data['sku_num'])
+        self.assertTrue(created_product.is_active)
+        self.assertFalse(created_product.available)
+        self.assertFalse(created_product.online_sell)
+
+    def test_unique_constraints(self):
+        token = self.perform_auth()
+        Product.objects.create(**self.data)
+
+        url = reverse('product:product')
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.post(url, self.data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Product.objects.count(), 1)
+
+    def test_list_products(self):
+        # Assuming you have some products created in your database, test listing them
+        # You can create some products here or in the setUp method of the test class
+        pass
