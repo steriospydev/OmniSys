@@ -8,9 +8,12 @@ class BaseAPITestCase(APITestCase):
         self.factory = APIRequestFactory()
         self.user = User.objects.create_user(username='testuser', password='12345')
 
+
     def perform_auth(self, username='testuser', password='12345'):
         url = reverse('rest_login')
         data = {'username': username, 'password': password}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         return response.data['key']
+
+

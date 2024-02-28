@@ -185,6 +185,7 @@ class PackageListCreateAPIViewTests(BaseAPITestCase):
         self.assertEqual(Package.objects.count(), 1)
     
 class ProductListCreateAPIViewTests(BaseAPITestCase):
+
     def setUp(self):
         super().setUp()
         self.category = Category.objects.create(category_name='Test Category')
@@ -250,3 +251,89 @@ class ProductListCreateAPIViewTests(BaseAPITestCase):
         # Assuming your API returns JSON data containing a list of products
         products = response.data
         self.assertEqual(len(products), Product.objects.count())
+
+
+
+class CategoryRetrieveUpdateDestroyAPIViewTests(BaseAPITestCase):
+    def setUp(self):
+        super().setUp()
+        self.category = Category.objects.create(category_name='Test Category')
+        self.url_str = 'product:category-item'
+
+    def test_retrieve_category(self):
+        token = self.perform_auth()
+        url = reverse(self.url_str, kwargs={'id': self.category.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['category_name'], self.category.category_name)
+        
+    def test_update_category(self):
+        token = self.perform_auth()
+        url = reverse(self.url_str, kwargs={'id': self.category.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        updated_data = {'category_name': 'Updated Category Name'}
+        response = self.client.put(url, updated_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.category.refresh_from_db()
+        self.assertEqual(self.category.category_name, updated_data['category_name'])
+
+    def test_partial_update_category(self):
+        token = self.perform_auth()
+        url = reverse(self.url_str, kwargs={'id': self.category.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        updated_data = {'category_name': 'Updated Category Name'}
+        response = self.client.patch(url, updated_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.category.refresh_from_db()
+        self.assertEqual(self.category.category_name, updated_data['category_name'])
+
+    def test_delete_category(self):
+        token = self.perform_auth()
+        url = reverse(self.url_str, kwargs={'id': self.category.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Category.objects.filter(id=self.category.id).exists())
+
+# class CategoryRetrieveUpdateDestroyAPIViewTests(BaseAPITestCase):
+#     def setUp(self):
+#         self.category = Category.objects.create(category_name='Test Category')
+#         self.url_str =  'product:category-item'
+#         self.token = self.perform_auth()
+
+    
+#     def test_retrieve_category(self):
+#         token = self.perform_auth()
+#         url = reverse(self.url_str, kwargs={'id': self.category.id})
+#         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+#         response = self.client.get(url)
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
+#         self.assertEqual(response.data, serializers.CategorySerializer(instance=self.category).data)
+
+#     def test_update_category(self):
+#         token = self.perform_auth()
+
+#         url = reverse(self.url_str, kwargs={'id': self.category.id})
+#         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+#         updated_data = {'category_name': 'Updated Category Name'}
+#         response = self.client.put(url, updated_data, format='json')
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
+#         self.category.refresh_from_db()
+#         self.assertEqual(self.category.category_name, updated_data['category_name'])
+
+#     # def test_partial_update_category(self):
+#     #     url = reverse(self.url_str, kwargs={'id': self.category.id})
+#     #     self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.token}')
+#     #     updated_data = {'category_name': 'Updated Category Name'}
+#     #     response = self.client.patch(url, updated_data, format='json')
+#     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+#     #     self.category.refresh_from_db()
+#     #     self.assertEqual(self.category.category_name, updated_data['category_name'])
+
+#     # def test_delete_category(self):
+#     #     url = reverse(self.url_str, kwargs={'id': self.category.id})
+#     #     self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.token}')
+#     #     response = self.client.delete(url)
+#     #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+#     #     self.assertFalse(Category.objects.filter(id=self.category.id).exists())
