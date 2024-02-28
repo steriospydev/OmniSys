@@ -3,7 +3,7 @@
 - [People Model Design](/app/backend/apps/people/docs/Models.md)
 - [Product Model Design](/app/backend/apps/product/docs/Models.md)
 - [Document Model Design](/app/backend/apps/people/docs/Models.md)
-- [Balance Model Design](/app/backend/apps/people/docs/Models.md)
+- [Balance Model Design](/app/backend/apps/balance/docs/Models.md)
 - [Storehouse Model Design](/app/backend/apps/people/docs/Models.md)
 
 
