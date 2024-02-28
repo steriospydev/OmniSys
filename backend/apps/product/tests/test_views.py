@@ -194,44 +194,59 @@ class ProductListCreateAPIViewTests(BaseAPITestCase):
         self.package = Package.objects.create(material='Paper', package_unit='kg', package_quantity=10.5)
         self.data = {
             'product_name': 'Test Product',
-            'subcategory': self.subcategory.id,
-            'package': self.package.id,
-            'tax_rate': self.tax.id,
+            'subcategory': str(self.subcategory.id),
+            'package': str(self.package.id),
+            'tax_rate': str(self.tax.id),
             'summary': 'Test Summary',
             'is_active': True,
             'available': False,
             'online_sell': False,
         }
 
+
     def test_create_product_success(self):
         token = self.perform_auth()
-        url = reverse('product:product')
+        url = reverse('product:products')
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
         response = self.client.post(url, self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 1)
         created_product = Product.objects.first()
         self.assertEqual(created_product.product_name, self.data['product_name'])
-        self.assertEqual(created_product.subcategory_id, self.data['subcategory'])
-        self.assertEqual(created_product.package_id, self.data['package'])
-        self.assertEqual(created_product.tax_rate_id, self.data['tax_rate'])
+        self.assertEqual(created_product.subcategory, self.subcategory)  
+        self.assertEqual(created_product.package, self.package)          
+        self.assertEqual(created_product.tax_rate, self.tax)          
         self.assertEqual(created_product.summary, self.data['summary'])
-        self.assertEqual(created_product.sku_num, self.data['sku_num'])
         self.assertTrue(created_product.is_active)
         self.assertFalse(created_product.available)
         self.assertFalse(created_product.online_sell)
 
     def test_unique_constraints(self):
-        token = self.perform_auth()
-        Product.objects.create(**self.data)
+        token = self.perform_auth()     
+        Product.objects.create(
+            product_name=self.data['product_name'],
+            subcategory=SubCategory.objects.first(),
+            package=Package.objects.first(),
+            tax_rate=Tax.objects.first(),
+            summary=self.data['summary'],
+            is_active=self.data['is_active'],
+            available=self.data['available'],
+            online_sell=self.data['online_sell']
+        )
 
-        url = reverse('product:product')
+        url = reverse('product:products')
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
         response = self.client.post(url, self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(Product.objects.count(), 1)
 
     def test_list_products(self):
-        # Assuming you have some products created in your database, test listing them
-        # You can create some products here or in the setUp method of the test class
-        pass
+        token = self.perform_auth()
+        url = reverse('product:products')
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Assuming your API returns JSON data containing a list of products
+        products = response.data
+        self.assertEqual(len(products), Product.objects.count())
