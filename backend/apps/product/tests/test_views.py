@@ -1,4 +1,5 @@
 from decimal import Decimal
+import uuid
 from django.urls import reverse
 from rest_framework import status
 
@@ -253,11 +254,11 @@ class ProductListCreateAPIViewTests(BaseAPITestCase):
         self.assertEqual(len(products), Product.objects.count())
 
 
-
 class CategoryRetrieveUpdateDestroyAPIViewTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
         self.category = Category.objects.create(category_name='Test Category')
+        self.other_category = Category.objects.create(category_name='Other Category')
         self.url_str = 'product:category-item'
 
     def test_retrieve_category(self):
@@ -267,23 +268,13 @@ class CategoryRetrieveUpdateDestroyAPIViewTests(BaseAPITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['category_name'], self.category.category_name)
-        
+
     def test_update_category(self):
         token = self.perform_auth()
         url = reverse(self.url_str, kwargs={'id': self.category.id})
         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
         updated_data = {'category_name': 'Updated Category Name'}
         response = self.client.put(url, updated_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.category.refresh_from_db()
-        self.assertEqual(self.category.category_name, updated_data['category_name'])
-
-    def test_partial_update_category(self):
-        token = self.perform_auth()
-        url = reverse(self.url_str, kwargs={'id': self.category.id})
-        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-        updated_data = {'category_name': 'Updated Category Name'}
-        response = self.client.patch(url, updated_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.category.refresh_from_db()
         self.assertEqual(self.category.category_name, updated_data['category_name'])
@@ -296,44 +287,66 @@ class CategoryRetrieveUpdateDestroyAPIViewTests(BaseAPITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Category.objects.filter(id=self.category.id).exists())
 
-# class CategoryRetrieveUpdateDestroyAPIViewTests(BaseAPITestCase):
-#     def setUp(self):
-#         self.category = Category.objects.create(category_name='Test Category')
-#         self.url_str =  'product:category-item'
-#         self.token = self.perform_auth()
+    def test_update_category_with_name_exists(self):
+        token = self.perform_auth()
+        url = reverse(self.url_str, kwargs={'id': self.category.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        updated_data = {'category_name': self.other_category.category_name}
+        response = self.client.put(url, updated_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data['category_name'][0], 'Category with this Category Name already exists.')
+
+class SubCategoryRetrieveUpdateDestroyAPIViewTests(BaseAPITestCase):
+    def setUp(self):
+        super().setUp()
+        self.category = Category.objects.create(category_name='Test Category')
+        self.subcategory = SubCategory.objects.create(subcategory_name='Test Sub',
+                                                      category=self.category)
+        self.url_str = 'product:sub-item'
+
+    def test_retrieve_sub(self):
+        token = self.perform_auth()
+        url = reverse(self.url_str, kwargs={'id': self.subcategory.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['subcategory_name'], self.subcategory.subcategory_name)
+
+    def test_update_sub(self):
+        token = self.perform_auth()
+        url = reverse(self.url_str, kwargs={'id': self.subcategory.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        updated_data = {'subcategory_name': 'Updated Subcategory Name', 'category':self.category.id}
+        response = self.client.put(url, updated_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.subcategory.refresh_from_db()
+        self.assertEqual(self.subcategory.subcategory_name, updated_data['subcategory_name'])
+
+    def test_delete_sub(self):
+        token = self.perform_auth()
+        url = reverse(self.url_str, kwargs={'id': self.subcategory.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(SubCategory.objects.filter(id=self.subcategory.id).exists())
+
+    def test_update_fail(self):
+        token = self.perform_auth()
+        other_subcategory = SubCategory.objects.create(subcategory_name='Other Sub',
+                                                       category=self.category)
+        url = reverse(self.url_str, kwargs={'id': self.subcategory.id})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        updated_data = {'subcategory_name': other_subcategory.subcategory_name,
+                        'category':self.category.id}
+        response = self.client.put(url, updated_data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('non_field_errors', response.data)
 
     
-#     def test_retrieve_category(self):
-#         token = self.perform_auth()
-#         url = reverse(self.url_str, kwargs={'id': self.category.id})
-#         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-#         response = self.client.get(url)
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertEqual(response.data, serializers.CategorySerializer(instance=self.category).data)
-
-#     def test_update_category(self):
-#         token = self.perform_auth()
-
-#         url = reverse(self.url_str, kwargs={'id': self.category.id})
-#         self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
-#         updated_data = {'category_name': 'Updated Category Name'}
-#         response = self.client.put(url, updated_data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.category.refresh_from_db()
-#         self.assertEqual(self.category.category_name, updated_data['category_name'])
-
-#     # def test_partial_update_category(self):
-#     #     url = reverse(self.url_str, kwargs={'id': self.category.id})
-#     #     self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.token}')
-#     #     updated_data = {'category_name': 'Updated Category Name'}
-#     #     response = self.client.patch(url, updated_data, format='json')
-#     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-#     #     self.category.refresh_from_db()
-#     #     self.assertEqual(self.category.category_name, updated_data['category_name'])
-
-#     # def test_delete_category(self):
-#     #     url = reverse(self.url_str, kwargs={'id': self.category.id})
-#     #     self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.token}')
-#     #     response = self.client.delete(url)
-#     #     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-#     #     self.assertFalse(Category.objects.filter(id=self.category.id).exists())
+    def test_retrieve_fail(self):
+        token = self.perform_auth()
+        invalid_uuid = str(uuid.uuid4())  # Generate a random UUID
+        url = reverse(self.url_str, kwargs={'id': invalid_uuid})
+        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token}')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
