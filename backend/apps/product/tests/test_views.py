@@ -341,7 +341,6 @@ class SubCategoryRetrieveUpdateDestroyAPIViewTests(BaseAPITestCase):
         response = self.client.put(url, updated_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('non_field_errors', response.data)
-
     
     def test_retrieve_fail(self):
         token = self.perform_auth()
