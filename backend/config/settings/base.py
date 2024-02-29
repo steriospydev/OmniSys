@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'apps.tools',    
     'apps.people',
     'apps.product',
+    'apps.cashflow',
     
 ]
 
