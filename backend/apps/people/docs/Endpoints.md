@@ -4,12 +4,7 @@ This document outlines the RESTful API endpoints for managing people.
 
 ## Base URL
 The base URL for all endpoints is /people/.
-## Authentication
-All endpoints require authentication via a username and a password.
-- Permissions
-    - IsAuthenticated: Users must be authenticated.
-## Error Responses
-Error responses follow standard HTTP status codes. Detailed error messages are provided in the response body.
+
 
 ### Supplier
 #### List Suppliers [GET]
