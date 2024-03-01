@@ -9,55 +9,55 @@ The base URL for all endpoints is /product/.
 ### Category
 
 #### List Category [GET]
-- /category/
+- `/category/`
 - Retrieves a list of all categories.
 - Response
-    - 200 OK: Returns a list of category objects.
-    - 401 Unauthorized: Authentication credentials were not provided or are invalid.
+    - `200 OK`: Returns a list of category objects.
+    - `401 Unauthorized`: Authentication credentials were not provided or are invalid.
 
 #### Create Category [POST]
-- /category/
+- `/category/`
 - Creates a new category.
 - Request Body
     - category_name (string, required): The name of the category.
 - Response
-    - 201 Created: Returns the newly created category object.
-    - 400 Bad Request: Invalid request body.
-    - 401 Unauthorized: Authentication credentials were not provided or are invalid.
+    - `201 Created`: Returns the newly created category object.
+    - `400 Bad Request`: Invalid request body.
+    - `401 Unauthorized`: Authentication credentials were not provided or are invalid.
 
 #### Retrieve Category [GET]
-- /category/{uuid}
+- `/category/{uuid}`
 - Retrieves details of a specific category.
 - Parameters
     - id (uuid, required): The unique identifier of the category.
 - Response
-    - 200 OK: Returns the details of the specified category.
-    - 401 Unauthorized: Authentication credentials were not provided or are invalid.
-    - 404 Not Found: The specified supplier does not exist.
+    - `200 OK`: Returns the details of the specified category.
+    - `401 Unauthorized`: Authentication credentials were not provided or are invalid.
+    - `404 Not Found`: The specified supplier does not exist.
 
 #### Update Category [PUT, PATCH]
-- /category/{uuid}
+- `/category/{uuid}`
 - Updates details of a specific category.
 - Parameters
     - id (uuid,required): The unique identifier of the category.
 - Request Body
     - category_name (string, required): The name of the category.
 - Response
-    - 200 OK: Returns the updated details of the category.
-    - 400 Bad Request: Invalid request body.
-    - 401 Unauthorized: Authentication credentials were not provided or are invalid.
-    - 404 Not Found: The specified category does not exist.
+    - `200 OK`: Returns the updated details of the category.
+    - `400 Bad Request`: Invalid request body.
+    - `401 Unauthorized`: Authentication credentials were not provided or are invalid.
+    - `404 Not Found`: The specified category does not exist.
 
 #### Delete Category [DELETE]
-- /category/{uuid}
+- `/category/{uuid}`
 - Deletes a specific category.
 - Parameters
     - id (uuid, required): The unique identifier of the category.
 - Response
-    - 204 No Content: category successfully deleted.
-    - 401 Unauthorized: Authentication credentials were not 
+    - `204 No Content`: category successfully deleted.
+    - `401 Unauthorized`: Authentication credentials were not 
                         provided or are invalid.
-    - 404 Not Found: The specified category does not exist.
+    - `404 Not Found`: The specified category does not exist.
 
 ### SubCategory
 
