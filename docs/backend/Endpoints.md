@@ -1,5 +1,7 @@
 # Endpoints
 - [People Endpoints](/app/backend/apps/people/docs/Endpoints.md)
+- [Product Endpoints](/app/backend/apps/product/docs/Endpoints.md)
+- [Cashflow Endpoints](/app/backend/apps/cashflow/docs/Endpoints.md)
 
 
 ## Authentication
