@@ -1,5 +1,6 @@
 from django.core.validators import RegexValidator
 from django.db import models
+from django.core.exceptions import ValidationError
 
 class TimeStamp(models.Model):
     created_at = models.DateTimeField('Created at', auto_now_add=True)
@@ -44,3 +45,12 @@ class Contact(models.Model):
 
 # class Note(models.Model):
 #     note = models.CharField(max_length=220)
+
+class AmountValidation(models.Model):
+    class Meta:
+        abstract = True
+
+    def clean(self):
+        super().clean()
+        if self.amount < 0:
+            raise ValidationError({'amount': 'Amount cannot be negative'})

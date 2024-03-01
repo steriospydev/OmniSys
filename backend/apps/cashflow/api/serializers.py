@@ -42,6 +42,11 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
     def get_payee_name(self, obj):
         return obj.payee.name 
     
+    def validate_amount(self, amount):
+        if amount < 0:
+            raise serializers.ValidationError("Tax value cannot be negative.")
+        return amount
+    
 class SourceSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='cashflow:source-item',
@@ -50,6 +55,8 @@ class SourceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Source
         fields = ['id', 'source', 'summary', 'url']
+
+    
 
 class IncomeSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
@@ -66,3 +73,8 @@ class IncomeSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_source_name(self,obj):
         return obj.source.source
+    
+    def validate_amount(self, amount):
+        if amount < 0:
+            raise serializers.ValidationError("Tax value cannot be negative.")
+        return amount

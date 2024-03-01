@@ -1,9 +1,9 @@
 import uuid
-from django.urls import reverse
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
-from apps.tools.models import TimeStamp
+from apps.tools.models import TimeStamp, AmountValidation
 
 class PayeeLabel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
@@ -34,7 +34,7 @@ class Payee(TimeStamp):
     def get_absolute_url(self):
         return reverse("payee-item", kwargs={"uuid": self.id})
     
-class Payment(TimeStamp):
+class Payment(TimeStamp, AmountValidation):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)
     payee = models.ForeignKey(Payee, on_delete=models.SET_NULL, null=True)
@@ -65,14 +65,14 @@ class Source(TimeStamp):
     def get_absolute_url(self):
         return reverse("source-item", kwargs={"uuid": self.id})
     
-class Income(TimeStamp):
+class Income(TimeStamp, AmountValidation):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)
     source = models.ForeignKey(Source, on_delete=models.SET_NULL, null=True)
     amount = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
     summary = models.CharField(max_length=200, blank=True, null=True)
     income_date =models.DateTimeField(blank=True, null=True, default=timezone.now)
-
+      
     def __str__(self) -> str:
         return f'{self.source} - {self.amount}'
     
