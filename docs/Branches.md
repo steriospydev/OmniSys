@@ -1,6 +1,10 @@
 master (Main)
-
+    - Full app
 SetUp
-    - Set Up Login/SignUp for Backend
-People
-    - Set up client supplier endpoints
+    - Initialize project,set Up Login/SignUp for Backend
+people
+    - Set up client/supplier app
+product
+    - Set up product app
+cashflow
+    - Set up cashflow app
