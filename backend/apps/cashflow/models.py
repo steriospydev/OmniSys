@@ -1,4 +1,5 @@
 import uuid
+from django.urls import reverse
 from django.db import models
 from django.utils import timezone
 
@@ -12,6 +13,9 @@ class PayeeLabel(models.Model):
     def __str__(self) -> str:
         return f'{self.name}'
 
+    def get_absolute_url(self):
+        return reverse("payeelabel-item", kwargs={"uuid": self.id})
+    
 class Payee(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)
@@ -20,12 +24,16 @@ class Payee(TimeStamp):
     summary = models.CharField(max_length=200, blank=True, null=True)
     active = models.BooleanField(default=True)
 
-    def __str__(self) -> str:
-        return f'{self.name}-{self.label}'    
 
     class Meta:
         unique_together = ['label', 'name']
 
+    def __str__(self) -> str:
+        return f'{self.name}-{self.label}'    
+    
+    def get_absolute_url(self):
+        return reverse("payee-item", kwargs={"uuid": self.id})
+    
 class Payment(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)
@@ -36,12 +44,15 @@ class Payment(TimeStamp):
                                        default=timezone.now)
     paid = models.BooleanField(default=True)
 
-    def __str__(self):
-        return f'{self.payee} - {self.created_at.strftime("%b %d %Y")}'
-    
     class Meta:
         ordering = ['paid', '-payment_day']
 
+    def __str__(self):
+        return f'{self.payee} - {self.created_at.strftime("%b %d %Y")}'
+    
+    def get_absolute_url(self):
+        return reverse("payment-item", kwargs={"uuid": self.id})
+    
 class Source(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
                           db_index=True, editable=False)
@@ -51,6 +62,9 @@ class Source(TimeStamp):
     def __str__(self) -> str:
         return f'{self.source}'
 
+    def get_absolute_url(self):
+        return reverse("source-item", kwargs={"uuid": self.id})
+    
 class Income(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)
@@ -61,3 +75,6 @@ class Income(TimeStamp):
 
     def __str__(self) -> str:
         return f'{self.source} - {self.amount}'
+    
+    def get_absolute_url(self):
+        return reverse("income-item", kwargs={"uuid": self.id})
