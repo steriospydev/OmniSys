@@ -2,9 +2,10 @@
 ## Category 
 - ID [PK, UUID4, UNIQUE]
 - category_name [NN,varchar(100), UNIQUE]
+
 ## Subcategory 
 - ID [PK, UUID4, UNIQUE]
-- sub_name [NN,varchar(100), UNIQUE]
+- subcategory_name [NN,varchar(100), UNIQUE]
 - category [FK to Category]
 ## Package 
 - ID [PK, UUID4, UNIQUE]
@@ -19,7 +20,7 @@
 ## Product [ TimeStamp ]
 - ID [PK, UUID4, UNIQUE]
 - product_name [varchar(100)]
-- sub_category [FK to SubCategory]
+- subcategory [FK to SubCategory]
 - tax_rate [FK to Tax_rate]
 - package [FK to Package]
 - summary [varchar, null]

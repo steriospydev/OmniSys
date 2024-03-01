@@ -43,14 +43,7 @@ class SubCategory(models.Model):
         verbose_name_plural = 'SubCategories'
         ordering = ['subcategory_name']
         unique_together = ['category', 'subcategory_name']
-        """
-        Response
-        {
-            "non_field_errors": [
-                "The fields category, subcategory_name must make a unique set."
-            ]
-            }
-        """
+       
     def __str__(self):
         return f'{self.subcategory_name}'
 

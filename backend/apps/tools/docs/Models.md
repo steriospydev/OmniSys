@@ -9,3 +9,6 @@
 - zipcode [varchar(5), Null]
 - email [varchar(100), Null]
 - phone [varchar(10), Null]
+
+# AmountValidation
+- Provides validation of the amount field in Income and Payment models
