@@ -29,4 +29,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-*docs/.todo*
+docs/todo
