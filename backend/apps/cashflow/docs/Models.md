@@ -33,30 +33,3 @@
 
 ##### [TimeStamp, AmountValidation](/backend/apps/tools/docs/Models.md) 
 #### [Back to Models.md](/app/docs/backend/Models.md) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#### [Back to Readme.md](/app/docs/Readme.md) 
-#### [Back to Models.md](/app/docs/backend/Models.md) 
