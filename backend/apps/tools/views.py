@@ -12,3 +12,4 @@ class BaseListCreateAPIView(ListCreateAPIView):
 class BaseRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     lookup_field = 'id'
+    

@@ -1,14 +1,11 @@
 from ..models import Supplier
 from .serializers import SupplierSerializer
-from apps.tools.views import (BaseListCreateAPIView,
-                              BaseRetrieveUpdateDestroyAPIView)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
 
-class SupplierListCreateAPIView(BaseListCreateAPIView):
-    queryset = Supplier.objects.all()
-    serializer_class = SupplierSerializer
 
-class SupplierRetrieveUpdateDestroyAPIView(
-    BaseRetrieveUpdateDestroyAPIView
-):
-    queryset = Supplier.objects.all()
+class SupplierModelViewSet(viewsets.ModelViewSet):
     serializer_class = SupplierSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Supplier.objects.all()
+    
