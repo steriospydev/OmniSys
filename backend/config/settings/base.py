@@ -2,11 +2,9 @@ import os
 import sys
 from pathlib import Path
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,22 +27,7 @@ INSTALLED_APPS = [
     'apps.people',
     'apps.product',
     'apps.cashflow',
-    
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
-
-CORS_ORIGIN_WHITELIST = (
-    'localhost:8080',
-)
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
-}
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',    
@@ -77,12 +60,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

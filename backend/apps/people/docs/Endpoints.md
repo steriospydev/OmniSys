@@ -75,3 +75,7 @@ The base URL for all endpoints is /people/.
     - 401 Unauthorized: Authentication credentials were not 
                         provided or are invalid.
     - 404 Not Found: The specified supplier does not exist.
+
+
+#### [Back to Readme](/Readme.md) 
+#### [Back to Entpoints](/docs/Entpoints.md) 

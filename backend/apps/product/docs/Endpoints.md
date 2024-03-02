@@ -263,3 +263,7 @@ The base URL for all endpoints is /product/.
     - `204 No Content`: Product successfully deleted.
     - `401 Unauthorized`: Authentication credentials were not provided or are invalid.
     - `404 Not Found`: The specified product does not exist.
+
+
+#### [Back to Readme](/Readme.md) 
+#### [Back to Entpoints](/docs/Entpoints.md) 
