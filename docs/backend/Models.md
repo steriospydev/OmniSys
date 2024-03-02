@@ -2,9 +2,9 @@
 - [Abstract Model Design](/backend/apps/tools/docs/Models.md)
 - [People Model Design](/backend/apps/people/docs/Models.md)
 - [Product Model Design](/backend/apps/product/docs/Models.md)
-- [Document Model Design](/backend/apps/people/docs/Models.md)
-- [Cahflow Model Design](/backend/apps/balance/docs/Models.md)
-- [Storehouse Model Design](/backend/apps/people/docs/Models.md)
+- [Cahflow Model Design](/backend/apps/cashflow/docs/Models.md)
+- [Document Model Design]()
+- [Storehouse Model Design]()
 
 
 ### Constraints Key:
