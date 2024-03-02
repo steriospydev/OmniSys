@@ -1,10 +1,10 @@
 ## Browse Models Documentation
-- [Abstract Model Design](/app/backend/apps/tools/docs/Models.md)
-- [People Model Design](/app/backend/apps/people/docs/Models.md)
-- [Product Model Design](/app/backend/apps/product/docs/Models.md)
-- [Document Model Design](/app/backend/apps/people/docs/Models.md)
-- [Cahflow Model Design](/app/backend/apps/balance/docs/Models.md)
-- [Storehouse Model Design](/app/backend/apps/people/docs/Models.md)
+- [Abstract Model Design](/backend/apps/tools/docs/Models.md)
+- [People Model Design](/backend/apps/people/docs/Models.md)
+- [Product Model Design](/backend/apps/product/docs/Models.md)
+- [Document Model Design](/backend/apps/people/docs/Models.md)
+- [Cahflow Model Design](/backend/apps/balance/docs/Models.md)
+- [Storehouse Model Design](/backend/apps/people/docs/Models.md)
 
 
 ### Constraints Key:
@@ -14,8 +14,8 @@
 - U : Unique
 
 ### Abstract and Constants
-* [TimeStamp,AmountValidation, Contact](/app/backend/apps/tools/docs/Models.md) 
-* [Material, Package Units](/app/backend/apps/tools/docs/ChoiceFields.md) 
+* [TimeStamp,AmountValidation, Contact](/backend/apps/tools/docs/Models.md) 
+* [Material, Package Units](/backend/apps/tools/docs/ChoiceFields.md) 
 
 
-#### [Back to Readme.md](/app/docs/Readme.md) 
+#### [Back to Readme.md](/Readme.md) 

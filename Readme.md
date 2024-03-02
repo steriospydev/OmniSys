@@ -19,7 +19,7 @@ OmniSys API is a robust and versatile solution designed to facilitate Create, Re
 ## Doc Links
 
 ----
-### [Setup Development Environment](/app/docs/public/Installation.md)
-### [Backend Models](/app/docs/backend/Models.md) 
-### [API Endpoints](/app/docs/backend/Endpoints.md)
-### [Branches](/app/docs/public/Branches.md)
+### [Setup Development Environment](/docs/public/Installation.md)
+### [Backend Models](/docs/backend/Models.md) 
+### [API Endpoints](/docs/backend/Endpoints.md)
+### [Branches](/docs/public/Branches.md)

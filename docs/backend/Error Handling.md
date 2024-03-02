@@ -81,3 +81,7 @@ In case of an error, the API returns a JSON object with the following structure:
 - Clients should always check the HTTP status code of the response to determine the outcome of their request.
 - If an error occurs, clients can parse the error response body to obtain more information about the error.
 - Clients should handle errors gracefully and provide meaningful feedback to users.
+
+
+
+#### [Back to Readme.md](/docs/Readme.md) 
