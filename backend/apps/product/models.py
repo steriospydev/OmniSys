@@ -13,7 +13,6 @@ class Category(TimeStamp):
                           db_index=True, editable=False)
     category_name = models.CharField("Category Name", unique=True,
                                       max_length=120)
-    slug = models.SlugField(null=True)
 
     class Meta:
         verbose_name = 'Category'
@@ -23,12 +22,11 @@ class Category(TimeStamp):
     def __str__(self):
         return f'{self.category_name}'
 
+    @property
     def get_num_products(self):
-        subcategories = self.subs.all()
-        return sum(subcategory.get_num_products() for subcategory in subcategories)
+        subs = self.subs.all()
+        return sum(subcategory.get_num_products for subcategory in subs) or 0
 
-    def get_absolute_url(self):
-        return reverse("sub-item", kwargs={"slug": self.slug})
     
 class SubCategory(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
@@ -36,7 +34,6 @@ class SubCategory(models.Model):
     subcategory_name = models.CharField("SubCategory Name", max_length=120)
     category = models.ForeignKey(Category, on_delete=models.CASCADE,
                                  related_name='subs')
-    slug = models.SlugField(null=True)
 
     class Meta:
         verbose_name = 'SubCategory'
@@ -47,12 +44,10 @@ class SubCategory(models.Model):
     def __str__(self):
         return f'{self.subcategory_name}'
 
+    @property
     def get_num_products(self):
         products = self.sub_products.all()
-        return len(products)
-
-    def get_absolute_url(self):
-        return reverse("sub-item", kwargs={"slug": self.slug})
+        return len(products) or 0
     
 class Package(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
@@ -74,6 +69,11 @@ class Package(models.Model):
     def __str__(self):
         return f'{self.material}, {self.package_quantity}{self.package_unit}'
 
+    @property
+    def get_num_products(self):
+        products = self.package_products.all()
+        return len(products) or 0
+    
 class Tax(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           db_index=True, editable=False)

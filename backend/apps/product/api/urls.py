@@ -1,37 +1,17 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+
 from . import views
 
 app_name = 'product'
 
-urlpatterns = [
-      path("product/",
-            views.ProductListCreateAPIView.as_view(),
-            name="products"),   
-      path("category/",
-            views.CategoryListCreateAPIView.as_view(),
-            name="category"),      
-      path("sub/",
-            views.SubCategoryListCreateAPIView.as_view(),
-            name="sub"),
-      path("package/",
-            views.PackageListCreateAPIView.as_view(),
-            name="package"),
-      path("tax/",
-            views.TaxListCreateAPIView.as_view(),
-            name="tax"),
-      path("product/<uuid:id>/",
-            views.ProductRetrieveUpdateDestroyAPIView.as_view(),
-            name="product-item"),  
-      path('category/<uuid:id>/',
-            view=views.CategoryRetrieveUpdateDestroyAPIView.as_view(),
-            name='category-item'),
-      path('sub/<uuid:id>/',
-            view=views.SubCategoryRetrieveUpdateDestroyAPIView.as_view(),
-            name='sub-item'),     
-      path('package/<uuid:id>/',
-            view=views.PackageRetrieveUpdateDestroyAPIView.as_view(),
-            name='package-item'), 
-      path('tax/<uuid:id>/',
-            view=views.TaxRetrieveUpdateDestroyAPIView.as_view(),
-            name='tax-item'),      
-]
+router = routers.DefaultRouter()
+
+router.register('product', views.ProductModelViewSet)
+router.register('category', views.CategoryModelViewSet)
+router.register('subcategory', views.SubCategoryModelViewSet)
+router.register('package', views.PackageModelViewSet)
+router.register('tax', views.TaxModelViewSet)
+
+
+urlpatterns = [ path('', include(router.urls)),]
