@@ -1,56 +1,31 @@
-from apps.tools.views import (BaseListCreateAPIView,
-                              BaseRetrieveUpdateDestroyAPIView)
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
+
 from ..models import (PayeeLabel, Payee, Payment,
                       Source, Income)
-
 from . import serializers
 
-class PayeeLabelListCreateAPIView(BaseListCreateAPIView):
-    queryset = PayeeLabel.objects.all()
+class PayeeLabelModelViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PayeeLabelSerializer
-
-class PayeeListCreateAPIView(BaseListCreateAPIView):
-    queryset = Payee.objects.all()
-    serializer_class = serializers.PayeeSerializer
-
-class PaymentListCreateAPIView(BaseListCreateAPIView):
-    queryset = Payment.objects.all()
-    serializer_class = serializers.PaymentSerializer
-
-class SourceListCreateAPIView(BaseListCreateAPIView):
-    queryset = Source.objects.all()
-    serializer_class = serializers.SourceSerializer
-
-class IncomeListCreateAPIView(BaseListCreateAPIView):
-    queryset = Income.objects.all()
-    serializer_class = serializers.IncomeSerializer
-
-class PayeeLabelRetrieveUpdateDestroyAPIView(
-    BaseRetrieveUpdateDestroyAPIView
-):
+    permission_classes = [IsAuthenticated]
     queryset = PayeeLabel.objects.all()
-    serializer_class = serializers.PayeeLabelSerializer
 
-class PayeeRetrieveUpdateDestroyAPIView(
-    BaseRetrieveUpdateDestroyAPIView
-):
-    queryset = Payee.objects.all()
+class PayeeModelViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PayeeSerializer
-
-class PaymentRetrieveUpdateDestroyAPIView(
-    BaseRetrieveUpdateDestroyAPIView
-):
-    queryset = Payment.objects.all()
+    permission_classes = [IsAuthenticated]
+    queryset = Payee.objects.all()
+    
+class PaymentModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]  
     serializer_class = serializers.PaymentSerializer
+    queryset = Payment.objects.all()
 
-class SourceRetrieveUpdateDestroyAPIView(
-    BaseRetrieveUpdateDestroyAPIView
-):
-    queryset = Source.objects.all()
+class SourceModelViewSet(viewsets.ModelViewSet):    
     serializer_class = serializers.SourceSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Source.objects.all()
 
-class IncomeRetrieveUpdateDestroyAPIView(
-    BaseRetrieveUpdateDestroyAPIView
-):
-    queryset = Income.objects.all()
+class IncomeModelViewSet(viewsets.ModelViewSet):    
     serializer_class = serializers.IncomeSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Income.objects.all()

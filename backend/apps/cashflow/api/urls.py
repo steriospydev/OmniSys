@@ -1,38 +1,14 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 from . import views
 
 app_name='cashflow'
+router = routers.DefaultRouter()
+router.register('payeelabel', views.PayeeLabelModelViewSet)
+router.register('payee', views.PayeeModelViewSet)
+router.register('payment', views.PaymentModelViewSet)
+router.register('source', views.SourceModelViewSet)
+router.register('income', views.IncomeModelViewSet)
 
-urlpatterns = [
-    path('payeelabel/',
-         views.PayeeLabelListCreateAPIView.as_view(),
-         name='payeelabel'),
-    path('payee/',
-         views.PayeeListCreateAPIView.as_view(),
-         name='payee'),
-    path('payment/',
-         views.PaymentListCreateAPIView.as_view(),
-         name='payment'),
-    path('source/',
-         views.SourceListCreateAPIView.as_view(),
-         name='source'),
-    path('income/',
-         views.IncomeListCreateAPIView.as_view(),
-         name='income'),
 
-    path('payeelabel/<uuid:id>/',
-         views.PayeeLabelRetrieveUpdateDestroyAPIView.as_view(),
-         name='payeelabel-item'),
-    path('payee/<uuid:id>/',
-         views.PayeeRetrieveUpdateDestroyAPIView.as_view(),
-         name='payee-item'),
-    path('payment/<uuid:id>/',
-         views.PaymentRetrieveUpdateDestroyAPIView.as_view(),
-         name='payment-item'),
-    path('source/<uuid:id>/',
-         views.SourceRetrieveUpdateDestroyAPIView.as_view(),
-         name='source-item'),
-    path('income/<uuid:id>/',
-         views.IncomeRetrieveUpdateDestroyAPIView.as_view(),
-         name='income-item'),
-]
+urlpatterns = [ path('', include(router.urls)),]

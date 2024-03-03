@@ -4,8 +4,8 @@ from ..models import (PayeeLabel, Payee, Payment,
 
 class PayeeLabelSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='cashflow:payeelabel-item',
-        lookup_field='id',
+        view_name='cashflow:payeelabel-detail',
+        lookup_field='pk',
         )  
      
     class Meta:
@@ -14,8 +14,8 @@ class PayeeLabelSerializer(serializers.HyperlinkedModelSerializer):
 
 class PayeeSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='cashflow:payee-item',
-        lookup_field='id',
+        view_name='cashflow:payee-detail',
+        lookup_field='pk',
         ) 
     label = serializers.PrimaryKeyRelatedField(queryset=PayeeLabel.objects.all())
     label_name = serializers.SerializerMethodField()
@@ -28,8 +28,8 @@ class PayeeSerializer(serializers.HyperlinkedModelSerializer):
 
 class PaymentSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='cashflow:payment-item',
-        lookup_field='id',
+        view_name='cashflow:payment-detail',
+        lookup_field='pk',
         ) 
     payee = serializers.PrimaryKeyRelatedField(queryset=Payee.objects.all())
     payee_name = serializers.SerializerMethodField()
@@ -49,8 +49,8 @@ class PaymentSerializer(serializers.HyperlinkedModelSerializer):
     
 class SourceSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='cashflow:source-item',
-        lookup_field='id',
+        view_name='cashflow:source-detail',
+        lookup_field='pk',
         ) 
     class Meta:
         model = Source
@@ -60,8 +60,8 @@ class SourceSerializer(serializers.HyperlinkedModelSerializer):
 
 class IncomeSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='cashflow:income-item',
-        lookup_field='id',
+        view_name='cashflow:income-detail',
+        lookup_field='pk',
         ) 
     source = serializers.PrimaryKeyRelatedField(queryset=Source.objects.all())
     source_name = serializers.SerializerMethodField()
