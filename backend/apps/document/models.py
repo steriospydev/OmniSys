@@ -17,7 +17,7 @@ class Invoice(TimeStamp):
                             db_index=True, editable=False)  
     invoice_no = models.BigIntegerField('Invoice No')
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
-    date_of_issuance = models.DateTimeField('Issue Date')
+    date_of_issuance = models.DateField('Issue Date')
 
     subtotal = models.DecimalField('Subtotal', max_digits=12,
                                     decimal_places=2, blank=True, default=0)
@@ -33,25 +33,25 @@ class Invoice(TimeStamp):
     def __str__(self) -> str:
         return f'{self.supplier} - {self.invoice_no}'
     
-    @property
+    
     def get_total_taxes(self):
-        return sum([item.get_item_tax for item in self.invoice_items.all()])
+        return sum([item.get_item_tax() for item in self.invoice_items.all()])
         
 
-    @property
+   
     def get_subtotal(self):
-        return sum([item.get_item_subtotal for item in self.invoice_items.all()])
+        return sum([item.get_item_subtotal() for item in self.invoice_items.all()])
      
-    @property
+  
     def get_total(self):
-        return self.get_subtotal + self.get_total_taxes
+        return self.get_subtotal() + self.get_total_taxes()
 
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.taxes = self.get_total_taxes
-        self.subtotal = self.get_subtotal
-        self.total = self.get_total
+        self.taxes = self.get_total_taxes()
+        self.subtotal = self.get_subtotal()
+        self.total = self.get_total()
         super().save(*args, **kwargs)
                      
 class InvoiceItem(models.Model):
@@ -70,8 +70,8 @@ class InvoiceItem(models.Model):
                                 default=00.00, blank=True,
                                 validators=[MinValueValidator(0)])
     item_tax = models.DecimalField('Taxes', default=00.00,
-                              blank=True, max_digits=4,
-                              decimal_places=1,
+                              blank=True, max_digits=6,
+                              decimal_places=2,
                               validators=[MinValueValidator(0)])
     item_total = models.DecimalField('Total',max_digits=10, decimal_places=2,
                                 default=00.00, blank=True,
@@ -80,34 +80,31 @@ class InvoiceItem(models.Model):
     def __str__(self) -> str:
         return f'{self.product.product_name}'
     
-    @property
+    
     def get_item_subtotal(self):
         return self.quantity * self.price
     
-    @property
-    def get_item_tax(self):
-        return self.get_item_subtotal * (self.product.tax_rate.value /Decimal('100'))
     
-    @property
+    def get_item_tax(self):
+        return self.get_item_subtotal() * (self.product.tax_rate.value / Decimal('100'))
+    
+
     def get_item_total(self):
-        return self.get_item_subtotal + self.get_item_tax
+        return self.get_item_subtotal() + self.get_item_tax()
     
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.item_subtotal = self.get_item_subtotal
-        self.item_tax = self.get_item_tax
-        self.item_total = self.get_item_total
+        self.item_subtotal = self.get_item_subtotal()
+        self.item_tax = self.get_item_tax()
+        self.item_total = self.get_item_total()
         super().save(*args, **kwargs)
 
 
     
-@receiver(pre_save, sender=InvoiceItem)
-@receiver(pre_delete, sender=InvoiceItem)
-@receiver(post_delete, sender=InvoiceItem)
+@receiver([pre_save,pre_delete,post_delete], sender=InvoiceItem)
 def update_order_totals(sender, instance, **kwargs):
+ 
     invoice = instance.invoice
-    # Update the totals for the order
-    invoice.taxes = invoice.get_total_taxes
-    invoice.subtotal = invoice.get_subtotal
-    invoice.total = invoice.get_total
+    invoice.taxes = invoice.get_total_taxes()
+    invoice.subtotal = invoice.get_subtotal()
+    invoice.total = invoice.get_total()
     invoice.save()
