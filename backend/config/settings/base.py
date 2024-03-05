@@ -6,6 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
+SECRET_KEY = 'django-insecure-5lu5o1*h$q74+$&q9kb&tshm+a#3m8#jpw9a7bvpe_g&lt5=p$'
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
