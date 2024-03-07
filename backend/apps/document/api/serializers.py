@@ -1,6 +1,6 @@
 from rest_framework.reverse import reverse
 from rest_framework import serializers
-from .. models import Invoice, InvoiceItem
+from ..models import Invoice, InvoiceItem
 
 from apps.people.models import Supplier
 from apps.product.models import Product
