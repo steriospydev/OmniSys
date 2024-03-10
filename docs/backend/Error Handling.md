@@ -84,4 +84,4 @@ In case of an error, the API returns a JSON object with the following structure:
 
 
 
-#### [Back to Readme.md](/docs/Readme.md) 
+#### [Back to Readme.md](/Readme.md) 
