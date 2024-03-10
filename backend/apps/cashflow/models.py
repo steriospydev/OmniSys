@@ -41,7 +41,7 @@ class Payment(TimeStamp, AmountValidation):
         ordering = ['paid', '-payment_day']
 
     def __str__(self):
-        return f'{self.payee} - {self.created_at.strftime("%b %d %Y")}'
+        return f'{self.payee.name} - {self.created_at.strftime("%b %d %Y")}'
     
 
 class Source(TimeStamp):

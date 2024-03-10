@@ -64,3 +64,6 @@ class ModelTests(TestCase):
 
     def test_sku_length(self):
         self.assertEqual(len(self.supplier.sku_num), 2)
+    
+    def test_str_method(self):
+        self.assertEqual(str(self.supplier), 'Test Company')

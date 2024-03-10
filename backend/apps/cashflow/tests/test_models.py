@@ -17,6 +17,9 @@ class PayeeLabelTestCase(TestCase):
     def test_payeelabel_created(self):
         self.assertEqual(PayeeLabel.objects.count(), 1)
 
+    def test_str_method(self):
+        self.assertEqual(str(self.payeelabel), 'Test Label')
+
 class PayeeTestCase(TestCase):
     def setUp(self):
         self.payeelabel = PayeeLabel.objects.create(
@@ -28,6 +31,9 @@ class PayeeTestCase(TestCase):
     
     def test_payee_created(self):
         self.assertEqual(Payee.objects.count(), 1)
+
+    def test_str_method(self):
+        self.assertEqual(str(self.payee), 'Test Payee-Test Label')
 
     def test_unique_label_name_combination(self):
         with self.assertRaises(Exception):
@@ -65,6 +71,11 @@ class SourceTestCase(TestCase):
     def test_source_created(self):
         self.assertEqual(Source.objects.count(), 1)
 
+
+    def test_str_method(self):
+        self.assertEqual(str(self.source), 'Test Source')
+
+    
 class IncomeTestCase(TestCase):
     def setUp(self) -> None:
         self.source = Source.objects.create(source='Test Source')     
@@ -76,6 +87,9 @@ class IncomeTestCase(TestCase):
     def test_income_created(self):
         self.assertEqual(Income.objects.count(), 1)
     
+    def test_str_method(self):
+        self.assertEqual(str(self.income), 'Test Source - 1245')
+
     def test_no_negative_amount_can_be_saved(self):
         income = Income.objects.create(
                 source=self.source,
@@ -99,6 +113,14 @@ class PaymentTestCase(TestCase):
             amount=249
         )
         self.assertEqual(Payment.objects.count(), 1)
+
+    def test_str_method(self):
+        payment = Payment.objects.create(
+            payee=self.payee,
+            amount=249
+        )
+        created_at = payment.created_at.strftime("%b %d %Y")
+        self.assertEqual(str(payment), f'Test Payee - {created_at}')
 
     def test_no_negative_amount_can_be_saved(self):
         payment = Payment.objects.create(

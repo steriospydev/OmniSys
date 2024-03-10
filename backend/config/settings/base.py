@@ -8,7 +8,6 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 SECRET_KEY = 'django-insecure-5lu5o1*h$q74+$&q9kb&tshm+a#3m8#jpw9a7bvpe_g&lt5=p$'
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,6 +23,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg', 
     'dj_rest_auth',
+    'django_filters',
     
     # own
     'apps.tools',    
@@ -43,6 +43,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',],
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 ROOT_URLCONF = 'config.urls'
 
