@@ -19,11 +19,10 @@ INSTALLED_APPS = [
     # 3rd party
     'corsheaders',
     "djoser",
-    'rest_framework_swagger',
     'rest_framework',
+    'rest_framework_swagger',    
     'rest_framework.authtoken',
     'drf_yasg', 
-    # 'dj_rest_auth',
     'django_filters',
     
     # own
@@ -46,7 +45,13 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication', 
+        ],
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
